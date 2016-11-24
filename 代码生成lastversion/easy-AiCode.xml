@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <codeStrings>
+    <add name="ucoal" connectionString="Data Source=.;Initial Catalog=ucoal;uid=sa;pwd=402059985@qq.com;" company="im@xingquan.org" author="im@xingquan.org" nspace="DW.CMS.Core" version="1.0.1" tablePrefix="" output="ucoal" assembly="DW.CMS.Core" />
+    <add name="extfield_db" connectionString="Data Source=.;Initial Catalog=extfield_db;uid=sa;pwd=402059985@qq.com;" company="" author="" nspace="ExtTest" version="" tablePrefix="" output="extfield_db" assembly="ExtTest" />
+    <add name="TestDB" connectionString="Data Source=.;Initial Catalog=TestDB;uid=sa;pwd=402059985@qq.com;" company="" author="im@xingquan.org" nspace="TestDB" version="1.0.1" tablePrefix="" output="TestDB" assembly="TestDB" />
+    <add name="dingdama" connectionString="Data Source=.;Initial Catalog=dingdama;uid=sa;pwd=402059985@qq.com;" company="dingdama.com" author="im@xingquan.org" nspace="DDM.SMS" version="1.0" tablePrefix="" output="dingdama" assembly="DDM.SMS" />
+    <add name="sgdamo" connectionString="Data Source=(local);Initial Catalog=sgdamo;uid=sa;pwd=402059985@qq.com;" company="" author="" nspace="DW.Crm" version="" tablePrefix="" output="sgdamo" assembly="DW.Crm" />
+  </codeStrings>
+</configuration>

@@ -1,0 +1,161 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Web.Mvc;
+using System.Text;
+using System.Web.Routing;
+using System.Web.Mvc.Html;
+using DW.Framework.Pager;
+
+namespace DW.Framework.Pager
+{
+    public static class PagingHelpers
+    {
+        public static string PagerNum(this HtmlHelper helper, IPaged pager, string action)
+        {
+            // Don't display anything if not multiple pages
+            if (pager.TotalPageCount == 1)
+                return string.Empty;
+
+            // Build route data
+            var routeData = new RouteValueDictionary(helper.ViewContext.RouteData.Values);
+
+            // Build string
+            var sb = new StringBuilder();
+
+            if (pager.PageIndex > 1) //从第二页开始显示
+            {
+                routeData["page"] = pager.PageIndex - 1;
+                sb.Append(helper.ActionLink("上一页", action, routeData));
+            }
+
+
+            int startIndex = pager.PageIndex > 10 ? pager.PageIndex - 10 : 1;
+            int endIndex = pager.PageIndex + 9;
+            if (endIndex > pager.TotalPageCount)
+                endIndex = pager.TotalPageCount;
+
+            for (int i = startIndex; i <= endIndex; i++)
+            {
+                routeData["page"] = i;
+                string href = "";
+                if (pager.PageIndex == i)
+                {
+
+                    //Dictionary<string, object> h = new Dictionary<string, object>();
+                    //h["style"] = "color:red";
+                    href = "<b style='color:red'>" + pager.PageIndex + "</b>";
+                    sb.Append(href);
+                }
+                else
+                {
+                    sb.Append(helper.ActionLink((i).ToString(), action, routeData));
+                }
+
+                sb.Append("&nbsp;");
+            }
+
+
+
+            // Render divider
+            //if (pager.PageIndex > 0 && pager.PageIndex < pager.TotalPageCount - 1)
+            //    sb.Append(" | ");
+
+            // Render Older Entries
+            if (pager.PageIndex < pager.TotalPageCount)
+            {
+                routeData["page"] = pager.PageIndex + 1;
+
+                sb.Append(helper.ActionLink("下一页", action, routeData));
+            }
+
+            sb.Append(string.Format("共{0}个,{1}页", pager.TotalItemCount, pager.TotalPageCount));
+            return sb.ToString();
+        }
+
+        public static string PagerNum(this HtmlHelper helper, IPaged pager, string action, bool keeyQueryString)
+        {
+            // Don't display anything if not multiple pages
+            if (pager.TotalPageCount == 1)
+                return string.Empty;
+
+            // Build route data
+            RouteValueDictionary routeData = new RouteValueDictionary(helper.ViewContext.RouteData.Values);
+
+            // Build string
+            var sb = new StringBuilder();
+
+            if (pager.PageIndex > 1) //从第二页开始显示
+            {
+                routeData["page"] = pager.PageIndex - 1;
+                sb.Append(helper.EnhancedActionLink("上一页", action, routeData, keeyQueryString));
+            }
+
+            sb.Append("&nbsp;");
+
+            int startIndex = pager.PageIndex > 10 ? pager.PageIndex - 10 : 1;
+            int endIndex = pager.PageIndex + 9;
+            if (endIndex > pager.TotalPageCount)
+                endIndex = pager.TotalPageCount;
+
+            for (int i = startIndex; i <= endIndex; i++)
+            {
+                routeData["page"] = i;
+                string href = "";
+                if (pager.PageIndex == i)
+                {
+
+                    //Dictionary<string, object> h = new Dictionary<string, object>();
+                    //h["style"] = "color:red";
+                    href = "<b style='color:red'>" + pager.PageIndex + "</b>";
+                    sb.Append(href);
+                }
+                else
+                {
+                    sb.Append(helper.EnhancedActionLink((i).ToString(), action, routeData, keeyQueryString));
+                }
+
+                sb.Append("&nbsp;");
+            }
+
+
+
+            // Render divider
+            //if (pager.PageIndex > 0 && pager.PageIndex < pager.TotalPageCount - 1)
+            //    sb.Append(" | ");
+
+            // Render Older Entries
+            if (pager.PageIndex < pager.TotalPageCount)
+            {
+                routeData["page"] = pager.PageIndex + 1;
+
+                sb.Append(helper.EnhancedActionLink("下一页", action, routeData, keeyQueryString));
+            }
+
+            sb.Append(string.Format("共{0}个,{1}页", pager.TotalItemCount, pager.TotalPageCount));
+            return sb.ToString();
+        }
+
+        public static string EnhancedActionLink(this HtmlHelper helper, string linkText, string actionName, RouteValueDictionary routeValues, bool keepQueryStrings)
+        {
+            ViewContext context = helper.ViewContext;
+            IDictionary<string, object> htmlAttributes = null;
+            //RouteValueDictionary routeValues = null;
+            string actionLink = string.Empty;
+            if (keepQueryStrings && context.RequestContext.HttpContext.Request.QueryString.Keys.Count > 0)
+            {
+                //routeValues = new RouteValueDictionary(context.RouteData.Values);
+                foreach (string key in context.RequestContext.HttpContext.Request.QueryString.Keys)
+                {
+                    if(key.ToLower()!="page")
+                    routeValues[key] = context.RequestContext.HttpContext.Request.QueryString[key];
+                }
+            }
+            actionLink = helper.ActionLink(linkText, actionName, routeValues, htmlAttributes).ToString();
+            return actionLink;
+        }
+
+
+       
+    }
+}
